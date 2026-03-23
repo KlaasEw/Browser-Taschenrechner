@@ -41,7 +41,8 @@ Der Taschenrechner bietet:
 
 ### Verlauf
 
-- Die letzten 10 Berechnungen werden unterhalb des Tastenfelds angezeigt
+- Die letzten 10 Berechnungen werden auf breiten Bildschirmen rechts neben dem Taschenrechner angezeigt
+- Auf kleineren Bildschirmen wird der Verlauf unter dem Taschenrechner dargestellt
 - Jeder Verlaufseintrag wird als `Rechnung = Ergebnis` dargestellt
 - Der Verlauf kann ueber `Loeschen` geleert werden
 - Verlauf wird in `localStorage` gespeichert und beim Neuladen wiederhergestellt
@@ -68,9 +69,11 @@ Der Taschenrechner bietet:
 
 ```text
 .
-|-- index.html
-|-- style.css
-|-- script.js
+|-- Assets/
+|-- code/
+|   |-- index.html
+|   |-- style.css
+|   `-- script.js
 |-- TECHNISCHES_KONZEPT.md
 `-- README.md
 ```
@@ -92,6 +95,8 @@ python3 -m http.server 8000
 Dann im Browser aufrufen:  
 `http://localhost:8000`
 
+Hinweis: Die Startdatei liegt unter `code/index.html`.
+
 ## Bedienung (Kurz)
 
 1. Erste Zahl eingeben
@@ -102,11 +107,11 @@ Dann im Browser aufrufen:
 
 ## Technische Hinweise
 
-- Zustandsbasiertes Rechenmodell in `script.js`
+- Zustandsbasiertes Rechenmodell in `code/script.js`
 - Klare Trennung zwischen:
-  - Struktur (`index.html`)
-  - Design (`style.css`)
-  - Logik (`script.js`)
+  - Struktur (`code/index.html`)
+  - Design (`code/style.css`)
+  - Logik (`code/script.js`)
 - Responsive Darstellung fuer kleinere Bildschirme
 
 ## Roadmap (moegliche Erweiterungen)
