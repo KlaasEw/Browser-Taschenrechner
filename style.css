@@ -1,0 +1,150 @@
+:root {
+  color-scheme: light;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --bg-page: #f4f5f8;
+  --bg-calculator: #ffffff;
+  --bg-display: #111827;
+  --text-display: #ffffff;
+  --bg-key: #e5e7eb;
+  --bg-key-hover: #d1d5db;
+  --text-key: #111827;
+  --bg-action: #fca5a5;
+  --bg-action-hover: #f87171;
+  --bg-operator: #93c5fd;
+  --bg-operator-hover: #60a5fa;
+  --shadow-calculator: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-page: #0f172a;
+  --bg-calculator: #111827;
+  --bg-display: #020617;
+  --text-display: #f9fafb;
+  --bg-key: #374151;
+  --bg-key-hover: #4b5563;
+  --text-key: #f9fafb;
+  --bg-action: #b91c1c;
+  --bg-action-hover: #dc2626;
+  --bg-operator: #1d4ed8;
+  --bg-operator-hover: #2563eb;
+  --shadow-calculator: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg-page);
+  padding: 1rem;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  border: 0;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  font-size: 0.95rem;
+  background: var(--bg-operator);
+  color: var(--text-key);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-operator-hover);
+}
+
+.calculator {
+  width: min(100%, 360px);
+  background: var(--bg-calculator);
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: var(--shadow-calculator);
+}
+
+.display {
+  display: block;
+  width: 100%;
+  min-height: 4.25rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: var(--bg-display);
+  color: var(--text-display);
+  border-radius: 10px;
+  text-align: right;
+  font-size: 2rem;
+  line-height: 1.2;
+  overflow-x: auto;
+}
+
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+
+.key {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.85rem;
+  font-size: 1.2rem;
+  background: var(--bg-key);
+  color: var(--text-key);
+  cursor: pointer;
+}
+
+.key:hover {
+  background: var(--bg-key-hover);
+}
+
+.key:active {
+  transform: translateY(1px);
+}
+
+.key-action {
+  background: var(--bg-action);
+}
+
+.key-action:hover {
+  background: var(--bg-action-hover);
+}
+
+.key-operator,
+.key-equals {
+  background: var(--bg-operator);
+}
+
+.key-operator:hover,
+.key-equals:hover {
+  background: var(--bg-operator-hover);
+}
+
+.key-plus {
+  grid-row: span 2;
+}
+
+.key-tall {
+  grid-row: span 2;
+}
+
+.key-wide {
+  grid-column: span 2;
+}
+
+@media (max-width: 400px) {
+  .display {
+    font-size: 1.7rem;
+  }
+
+  .key {
+    font-size: 1.05rem;
+    padding: 0.75rem;
+  }
+}
