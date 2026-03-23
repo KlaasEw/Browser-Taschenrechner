@@ -4,7 +4,7 @@ Ein einfacher, einsteigerfreundlicher Taschenrechner, der direkt im Browser laeu
 Das Projekt wurde mit **HTML**, **CSS** und **JavaScript** umgesetzt und benoetigt kein Backend.
 Dieses Projekt wurde vollständig mit einer **AI** erstellt.
 
-![Taschenrechner im hellen Modus](/Taschenrechner_hell.png)
+![Taschenrechner im hellen Modus](/Assets/Taschenrechner_hell.png)
 
 ## Vorschau
 
@@ -49,7 +49,7 @@ Der Taschenrechner bietet:
 - Button oben links zum Wechsel zwischen Hell- und Dunkelmodus
 - Theme wird in `localStorage` gespeichert und beim Neuladen wiederhergestellt
 
-![Taschenrechner im dunklen Modus](/Taschenrechner_dunkel.png)
+![Taschenrechner im dunklen Modus](/Assets/Taschenrechner_dunkel.png)
 
 ## Projektstruktur
 
