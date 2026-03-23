@@ -1,15 +1,21 @@
 const display = document.querySelector("#display");
 const keysContainer = document.querySelector(".keys");
 const themeToggleButton = document.querySelector("#theme-toggle");
+const historyList = document.querySelector("#history-list");
+const clearHistoryButton = document.querySelector("#clear-history");
+const KEYBOARD_HIGHLIGHT_CLASS = "key-keyboard-active";
 
 const state = {
   currentInput: "0",
   previousInput: "",
   operator: null,
   shouldResetDisplay: false,
+  history: [],
 };
 
 const THEME_STORAGE_KEY = "calculator-theme";
+const HISTORY_STORAGE_KEY = "calculator-history";
+const MAX_HISTORY_ENTRIES = 10;
 
 function applyTheme(theme) {
   document.documentElement.setAttribute("data-theme", theme);
@@ -60,6 +66,52 @@ function clearAll() {
   state.operator = null;
   state.shouldResetDisplay = false;
   updateDisplay();
+}
+
+function saveHistory() {
+  localStorage.setItem(HISTORY_STORAGE_KEY, JSON.stringify(state.history));
+}
+
+function renderHistory() {
+  if (!historyList) {
+    return;
+  }
+
+  if (state.history.length === 0) {
+    historyList.innerHTML = '<li class="history-empty">Noch keine Berechnungen</li>';
+    return;
+  }
+
+  historyList.innerHTML = state.history
+    .map((entry) => `<li class="history-item">${entry}</li>`)
+    .join("");
+}
+
+function initializeHistory() {
+  try {
+    const storedHistory = localStorage.getItem(HISTORY_STORAGE_KEY);
+    const parsedHistory = storedHistory ? JSON.parse(storedHistory) : [];
+    state.history = Array.isArray(parsedHistory)
+      ? parsedHistory.filter((entry) => typeof entry === "string").slice(0, MAX_HISTORY_ENTRIES)
+      : [];
+  } catch {
+    state.history = [];
+  }
+
+  renderHistory();
+}
+
+function addHistoryEntry(entry) {
+  state.history.unshift(entry);
+  state.history = state.history.slice(0, MAX_HISTORY_ENTRIES);
+  saveHistory();
+  renderHistory();
+}
+
+function clearHistory() {
+  state.history = [];
+  localStorage.removeItem(HISTORY_STORAGE_KEY);
+  renderHistory();
 }
 
 function backspace() {
@@ -125,6 +177,74 @@ function appendNumber(value) {
   updateDisplay();
 }
 
+function formatResult(value) {
+  if (!Number.isFinite(value)) {
+    return "Fehler";
+  }
+
+  return Number.isInteger(value) ? String(value) : String(Number(value.toFixed(10)));
+}
+
+function toggleSign() {
+  if (state.currentInput === "Fehler") {
+    clearAll();
+    return;
+  }
+
+  if (state.shouldResetDisplay) {
+    state.currentInput = "0";
+    state.shouldResetDisplay = false;
+  }
+
+  if (state.currentInput === "0") {
+    return;
+  }
+
+  state.currentInput = state.currentInput.startsWith("-")
+    ? state.currentInput.slice(1)
+    : `-${state.currentInput}`;
+
+  updateDisplay();
+}
+
+function applyPercent() {
+  if (state.currentInput === "Fehler") {
+    clearAll();
+    return;
+  }
+
+  const current = Number(state.currentInput);
+  if (!Number.isFinite(current)) {
+    state.currentInput = "Fehler";
+    updateDisplay();
+    return;
+  }
+
+  if (state.operator && state.previousInput !== "") {
+    const previous = Number(state.previousInput);
+    if (!Number.isFinite(previous)) {
+      state.currentInput = "Fehler";
+      updateDisplay();
+      return;
+    }
+
+    if (state.shouldResetDisplay) {
+      state.currentInput = formatResult(previous / 100);
+      state.shouldResetDisplay = false;
+      updateDisplay();
+      return;
+    }
+
+    state.currentInput = formatResult((previous * current) / 100);
+    updateDisplay();
+    return;
+  }
+
+  state.currentInput = formatResult(current / 100);
+  state.shouldResetDisplay = false;
+  updateDisplay();
+}
+
 function calculate(previousValue, currentValue, operator) {
   const prev = Number(previousValue);
   const current = Number(currentValue);
@@ -154,7 +274,7 @@ function calculate(previousValue, currentValue, operator) {
       return currentValue;
   }
 
-  return Number.isInteger(result) ? String(result) : String(Number(result.toFixed(10)));
+  return formatResult(result);
 }
 
 function chooseOperator(nextOperator) {
@@ -185,12 +305,53 @@ function compute() {
     return;
   }
 
+  const calculation = `${state.previousInput}${state.operator}${state.currentInput}`;
   const computed = calculate(state.previousInput, state.currentInput, state.operator);
   state.currentInput = computed;
   state.previousInput = "";
   state.operator = null;
   state.shouldResetDisplay = true;
   updateDisplay();
+  addHistoryEntry(`${calculation} = ${computed}`);
+}
+
+function getButtonForKeyboardKey(key) {
+  if (/^[0-9]$/.test(key) || key === ".") {
+    return keysContainer?.querySelector(`[data-action="number"][data-value="${key}"]`);
+  }
+
+  if (["+", "-", "*", "/"].includes(key)) {
+    return keysContainer?.querySelector(`[data-action="operator"][data-value="${key}"]`);
+  }
+
+  if (key === "Enter" || key === "=") {
+    return keysContainer?.querySelector('[data-action="equals"]');
+  }
+
+  if (key === "Backspace") {
+    return keysContainer?.querySelector('[data-action="backspace"]');
+  }
+
+  if (key === "Escape") {
+    return keysContainer?.querySelector('[data-action="clear"]');
+  }
+
+  if (key === "%") {
+    return keysContainer?.querySelector('[data-action="percent"]');
+  }
+
+  return null;
+}
+
+function highlightKeyboardKey(key) {
+  const button = getButtonForKeyboardKey(key);
+  if (!button) {
+    return;
+  }
+
+  button.classList.remove(KEYBOARD_HIGHLIGHT_CLASS);
+  void button.offsetWidth;
+  button.classList.add(KEYBOARD_HIGHLIGHT_CLASS);
 }
 
 keysContainer.addEventListener("click", (event) => {
@@ -222,6 +383,16 @@ keysContainer.addEventListener("click", (event) => {
     return;
   }
 
+  if (action === "sign") {
+    toggleSign();
+    return;
+  }
+
+  if (action === "percent") {
+    applyPercent();
+    return;
+  }
+
   if (action === "backspace") {
     backspace();
   }
@@ -229,6 +400,7 @@ keysContainer.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   const { key } = event;
+  highlightKeyboardKey(key);
 
   if (/^[0-9]$/.test(key)) {
     appendNumber(key);
@@ -242,6 +414,12 @@ document.addEventListener("keydown", (event) => {
 
   if (["+", "-", "*", "/"].includes(key)) {
     chooseOperator(key);
+    return;
+  }
+
+  if (key === "%") {
+    event.preventDefault();
+    applyPercent();
     return;
   }
 
@@ -264,5 +442,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 themeToggleButton?.addEventListener("click", toggleTheme);
+clearHistoryButton?.addEventListener("click", clearHistory);
 initializeTheme();
+initializeHistory();
 clearAll();

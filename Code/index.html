@@ -11,34 +11,46 @@
       Dunkelmodus
     </button>
 
-    <main class="calculator" aria-label="Taschenrechner">
-      <output class="display" id="display" aria-live="polite">0</output>
+    <div class="layout">
+      <section class="history" aria-label="Berechnungsverlauf">
+        <div class="history-header">
+          <h2 class="history-title">Verlauf</h2>
+          <button type="button" id="clear-history" class="history-clear-button">Loeschen</button>
+        </div>
+        <ol id="history-list" class="history-list"></ol>
+      </section>
 
-      <div class="keys" role="group" aria-label="Tastenfeld">
-        <button type="button" data-action="clear" class="key key-action">C</button>
-        <button type="button" data-action="backspace" class="key key-action">⌫</button>
-        <button type="button" data-action="operator" data-value="/" class="key key-operator">/</button>
-        <button type="button" data-action="operator" data-value="*" class="key key-operator">*</button>
+      <main class="calculator" aria-label="Taschenrechner">
+        <output class="display" id="display" aria-live="polite">0</output>
 
-        <button type="button" data-action="number" data-value="7" class="key">7</button>
-        <button type="button" data-action="number" data-value="8" class="key">8</button>
-        <button type="button" data-action="number" data-value="9" class="key">9</button>
-        <button type="button" data-action="operator" data-value="-" class="key key-operator">-</button>
+        <div class="keys" role="group" aria-label="Tastenfeld">
+          <button type="button" data-action="clear" class="key key-action">C</button>
+          <button type="button" data-action="backspace" class="key key-action">⌫</button>
+          <button type="button" data-action="percent" class="key key-operator">%</button>
+          <button type="button" data-action="operator" data-value="/" class="key key-operator">/</button>
 
-        <button type="button" data-action="number" data-value="4" class="key">4</button>
-        <button type="button" data-action="number" data-value="5" class="key">5</button>
-        <button type="button" data-action="number" data-value="6" class="key">6</button>
-        <button type="button" data-action="operator" data-value="+" class="key key-operator">+</button>
+          <button type="button" data-action="number" data-value="7" class="key">7</button>
+          <button type="button" data-action="number" data-value="8" class="key">8</button>
+          <button type="button" data-action="number" data-value="9" class="key">9</button>
+          <button type="button" data-action="operator" data-value="*" class="key key-operator">*</button>
 
-        <button type="button" data-action="number" data-value="1" class="key">1</button>
-        <button type="button" data-action="number" data-value="2" class="key">2</button>
-        <button type="button" data-action="number" data-value="3" class="key">3</button>
-        <button type="button" data-action="equals" class="key key-equals">=</button>
+          <button type="button" data-action="number" data-value="4" class="key">4</button>
+          <button type="button" data-action="number" data-value="5" class="key">5</button>
+          <button type="button" data-action="number" data-value="6" class="key">6</button>
+          <button type="button" data-action="operator" data-value="-" class="key key-operator">-</button>
 
-        <button type="button" data-action="number" data-value="0" class="key key-wide">0</button>
-        <button type="button" data-action="number" data-value="." class="key">.</button>
-      </div>
-    </main>
+          <button type="button" data-action="number" data-value="1" class="key">1</button>
+          <button type="button" data-action="number" data-value="2" class="key">2</button>
+          <button type="button" data-action="number" data-value="3" class="key">3</button>
+          <button type="button" data-action="operator" data-value="+" class="key key-operator">+</button>
+
+          <button type="button" data-action="sign" class="key key-action">+/-</button>
+          <button type="button" data-action="number" data-value="0" class="key">0</button>
+          <button type="button" data-action="number" data-value="." class="key">.</button>
+          <button type="button" data-action="equals" class="key key-equals">=</button>
+        </div>
+      </main>
+    </div>
 
     <script src="script.js"></script>
   </body>

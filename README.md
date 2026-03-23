@@ -11,6 +11,8 @@ Dieses Projekt wurde vollständig mit einer **AI** erstellt.
 Der Taschenrechner bietet:
 
 - Grundrechenarten (`+`, `-`, `*`, `/`)
+- Prozentfunktion (`%`)
+- Verlauf der letzten Berechnungen
 - Anzeige der vollstaendigen Eingabe (z. B. `12+34`)
 - Ergebnisberechnung mit `=`
 - `C` fuer komplettes Zuruecksetzen
@@ -25,6 +27,8 @@ Der Taschenrechner bietet:
 - Zahlen `0-9`
 - Dezimalpunkt `.`
 - Operatoren `+`, `-`, `*`, `/`
+- Prozent mit `%` (bei laufender Rechnung als Prozent vom ersten Wert)
+- Vorzeichenwechsel mit `+/-`
 - `=` zur Berechnung
 - Division durch `0` wird als `Fehler` angezeigt
 
@@ -35,6 +39,13 @@ Der Taschenrechner bietet:
 - `⌫` loescht die letzte Eingabe (Zahl, Operator oder Teil der zweiten Zahl)
 - `C` setzt den kompletten Rechner zurueck
 
+### Verlauf
+
+- Die letzten 10 Berechnungen werden unterhalb des Tastenfelds angezeigt
+- Jeder Verlaufseintrag wird als `Rechnung = Ergebnis` dargestellt
+- Der Verlauf kann ueber `Loeschen` geleert werden
+- Verlauf wird in `localStorage` gespeichert und beim Neuladen wiederhergestellt
+
 ### Tastatursteuerung
 
 - `0-9` fuer Zahlen
@@ -43,6 +54,8 @@ Der Taschenrechner bietet:
 - `Enter` oder `=` fuer Ergebnis
 - `Backspace` fuer Loeschen der letzten Eingabe
 - `Escape` fuer komplettes Zuruecksetzen (`C`)
+- `%` fuer Prozentwerte
+- Visuelles Highlight der passenden Taste bei Tastatureingaben
 
 ### Theme-Umschaltung
 
@@ -98,10 +111,7 @@ Dann im Browser aufrufen:
 
 ## Roadmap (moegliche Erweiterungen)
 
-- Prozentfunktion `%`
-- Vorzeichenwechsel `+/-`
-- Rechen-Historie
-- Visuelles Highlight von Tasten bei Tastatureingabe
+- Export der Historie (z. B. als Text)
 
 ## Lizenz
 
